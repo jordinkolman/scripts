@@ -87,6 +87,7 @@ SPRINT_FILTER=$(cat <<EOF
 EOF
 )
 
+echo "--------- TASKS DUE SOON ---------"
 fetch_tasks "🚨 OVERDUE" "$OVERDUE_FILTER"
 fetch_tasks "📍 DUE TODAY" "$TODAY_FILTER"
 fetch_tasks "📅 LATER THIS WEEK" "$WEEK_FILTER"
