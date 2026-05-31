@@ -38,6 +38,23 @@ EOF
   fi
 }
 
+fetch_calendar() {
+  local RESPONSE=$(curl -sL "${GCAL_API_URL}?token=${GCAL_TOKEN}")
+    
+  local TODAY_EVENTS=$(echo "$RESPONSE" | jq -r '.today | join("\n")')
+  local WEEK_EVENTS=$(echo "$RESPONSE" | jq -r '.thisWeek | join("\n")')
+
+  if [ -n "$TODAY_EVENTS" ]; then
+    echo -e "\n🗓️ TODAY'S SCHEDULE"
+    echo "$TODAY_EVENTS"
+  fi
+
+  if [ -n "$WEEK_EVENTS" ]; then
+    echo -e "\n🗓️ LATER THIS WEEK (CALENDAR)"
+    echo "$WEEK_EVENTS"
+  fi
+}
+
 # --- Filters ---
 
 OVERDUE_FILTER=$(cat <<EOF
@@ -90,6 +107,7 @@ EOF
 
 # Capture all output into a single variable
 MESSAGE_CONTENT=$(
+    fetch_calendar
     fetch_tasks "🚨 OVERDUE" "$OVERDUE_FILTER"
     fetch_tasks "📍 DUE TODAY" "$TODAY_FILTER"
     fetch_tasks "📅 LATER THIS WEEK" "$WEEK_FILTER"
