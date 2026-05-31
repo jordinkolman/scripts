@@ -86,9 +86,22 @@ SPRINT_FILTER=$(cat <<EOF
 }
 EOF
 )
+# --- Execution ---
 
-echo "--------- TASKS DUE SOON ---------"
-fetch_tasks "🚨 OVERDUE" "$OVERDUE_FILTER"
-fetch_tasks "📍 DUE TODAY" "$TODAY_FILTER"
-fetch_tasks "📅 LATER THIS WEEK" "$WEEK_FILTER"
-fetch_tasks "🏃 CURRENT SPRINT" "$SPRINT_FILTER"
+# Capture all output into a single variable
+MESSAGE_CONTENT=$(
+    fetch_tasks "🚨 OVERDUE" "$OVERDUE_FILTER"
+    fetch_tasks "📍 DUE TODAY" "$TODAY_FILTER"
+    fetch_tasks "📅 LATER THIS WEEK" "$WEEK_FILTER"
+    fetch_tasks "🏃 CURRENT SPRINT" "$SPRINT_FILTER"
+)
+
+# Strip whitespace to check if the message is actually empty
+if [ -n "${MESSAGE_CONTENT// /}" ]; then
+    
+    # Use jq to safely escape the string into a valid JSON payload
+    JSON_PAYLOAD=$(jq -n --arg content "$MESSAGE_CONTENT" '{content: $content}')
+
+    # Send the payload to the Discord Webhook
+    curl -s -X POST -H "Content-Type: application/json" -d "$JSON_PAYLOAD" "$DISCORD_WEBHOOK_URL"
+fi   
