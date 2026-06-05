@@ -27,7 +27,7 @@ if not DISCORD_WEBHOOK_URL or not API_KEY:
     print(f'Error: Missing variables: check {env_path}')
     sys.exit(1)
 
-LLM_VERSION = 'gemini-3-flash-preview'
+LLM_VERSION = 'gemini-3.5-flash'
 LLM_URL = f'https://generativelanguage.googleapis.com/v1beta/models/{LLM_VERSION}:generateContent?key={API_KEY}' 
 PROMPT_TEXT = ''' 
 You are an AI assistant designed to prompt the user to post on social media. Follow these exact steps to generate the user's daily assignment: 
@@ -43,7 +43,7 @@ Output your response in the following format exactly, with no additional convers
     Time to post on [Platform]! Topic: [Category] Your Assignment: [1-2 sentences detailing exactly what the user should capture or write right now]
 '''
 
-def generate_social_prompt():
+def generate_social_prompt():   
     ''' Calls the LLM API to generate a randomize social media assignment '''
     payload = {
         'contents': [{'parts': [{'text': PROMPT_TEXT}]}],
