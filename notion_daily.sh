@@ -105,9 +105,16 @@ EOF
 )
 # --- Execution ---
 
+LOG_DIR="$HOME/workspace/scripts/logs"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/reminders_log.txt"
+
 # Capture all output into a single variable
 MESSAGE_CONTENT=$(
     fetch_calendar
+
+    uv run "$HOME/workspace/scripts/fetch_icloud_reminders.py" 2>> "$LOG_FILE"
+
     fetch_tasks "🚨 OVERDUE" "$OVERDUE_FILTER"
     fetch_tasks "📍 DUE TODAY" "$TODAY_FILTER"
     fetch_tasks "📅 LATER THIS WEEK" "$WEEK_FILTER"
