@@ -61,7 +61,7 @@ if __name__ == "__main__":
         print("\n iCLOUD REMINDERS")
         for reminder in res.reminders:
             if reminder.due_date:
-                date_str = f" [{reminder.due_date[0]}-{reminder.due_date[1]:02d}-{reminder.due_date[2]:02d}]"
+                date_str = f" [{reminder.due_date.strftime('%Y-%m-%d %I:%M %p')}]"
             else:
                 date_str = ""
 
