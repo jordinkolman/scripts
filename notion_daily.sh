@@ -113,7 +113,7 @@ LOG_FILE="$LOG_DIR/reminders_log.txt"
 MESSAGE_CONTENT=$(
     fetch_calendar
 
-    uv run "$HOME/workspace/scripts/fetch_icloud_reminders.py" 2>> "$LOG_FILE"
+    /snap/bin/uv run "$HOME/workspace/scripts/fetch_icloud_reminders.py" 2>> "$LOG_FILE"
 
     fetch_tasks "🚨 OVERDUE" "$OVERDUE_FILTER"
     fetch_tasks "📍 DUE TODAY" "$TODAY_FILTER"
