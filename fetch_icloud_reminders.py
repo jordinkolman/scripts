@@ -38,7 +38,13 @@ def fetch_reminders(reminders):
 
 if __name__ == "__main__":
     print(f'[{datetime.datetime.now().isoformat()}] Authenticating...', file=sys.stderr)
-    api = PyiCloudService(APPLE_ID, PASSWORD)
+
+    PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+    STATE_DIR = os.path.join(PROJECT_DIR, ".icloud_state")
+
+    os.makedirs(STATE_DIR, exist_ok=True)
+
+    api = PyiCloudService(APPLE_ID, PASSWORD, cookie_directory=STATE_DIR)
 
     if api.requires_2fa:
         print(f'[{datetime.datetime.now().isoformat()}] 2FA Required. ', file=sys.stderr)

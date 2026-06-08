@@ -1,6 +1,10 @@
 .env
 .env.*
 
+/.icloud_state
+/.icloud_state/
+/.icloud_state/*
+
 /logs
 /logs/
 /logs/*
